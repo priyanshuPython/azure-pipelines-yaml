@@ -9,11 +9,23 @@ trigger:
 pool:
   vmImage: ubuntu-latest
 
-steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
+pool:
+  vmImage: Ubuntu-16.04
 
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+variables:
+  azureSubscriptionEndpoint: Contoso
+  DockerNamespace: contoso.azurecr.io
+  DockerRepository: aspnetcore
+  WebAppName: containersdemoapp
+
+steps:
+
+- task: AzureRMWebAppDeployment@4
+  displayName: Azure App Service Deploy
+  inputs:
+    appType: webAppContainer
+    ConnectedServiceName: $(azureSubscriptionEndpoint)
+    WebAppName: $(WebAppName)
+    DockerNamespace: $(DockerNamespace)
+    DockerRepository: $priyanshumulanidocker08/webapplication1
+    DockerImageTag: $latest
